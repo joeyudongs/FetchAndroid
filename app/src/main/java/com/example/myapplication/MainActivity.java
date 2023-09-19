@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -34,6 +35,21 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     public  ArrayList<String> listIds = new ArrayList<>();
     public  ArrayList<JSONArray> groupedList = new ArrayList<>();
+
+    ListIDAdapter.OnIDRecyclerViewClickListener listener = new ListIDAdapter.OnIDRecyclerViewClickListener() {
+        @Override
+        public void OnClick(int pos) {
+            JSONArray jsonArray = groupedList.get(pos);
+
+            Intent intent = new Intent(this, ViewIDActivity.class);
+            intent.putExtra("data",jsonArray.toString());
+            startActivity(intent);
+        }
+    };
+
+    // Create the adapter with the listener
+    ListIDAdapter listIDAdapter = new ListIDAdapter(MainActivity.this, listIds, listener);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,10 +104,10 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray sortedJsonArray = sortJsonArray(jsonArray, "name");
                     groupDataByListId(sortedJsonArray);
 
-                    //IDRecyclerViewAdapter idRecyclerViewAdapter = new IDRecyclerViewAdapter(MainActivity.this, listIds, MainActivity.this);
+                    ListIDAdapter listIDAdapter = new ListIDAdapter(MainActivity.this, listIds, listener);
 
                     recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
-                    //recyclerView.setAdapter(idRecyclerViewAdapter);
+                    recyclerView.setAdapter(listIDAdapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -178,5 +194,6 @@ public class MainActivity extends AppCompatActivity {
             groupedList.add(listIDJsonArray);
         }
     }
+
 
 }

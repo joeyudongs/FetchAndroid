@@ -41,14 +41,11 @@ public class MainActivity extends AppCompatActivity {
         public void OnClick(int pos) {
             JSONArray jsonArray = groupedList.get(pos);
 
-            Intent intent = new Intent(this, ViewIDActivity.class);
+            Intent intent = new Intent(MainActivity.this, DisplayHiringActivity.class);
             intent.putExtra("data",jsonArray.toString());
             startActivity(intent);
         }
     };
-
-    // Create the adapter with the listener
-    ListIDAdapter listIDAdapter = new ListIDAdapter(MainActivity.this, listIds, listener);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,6 +191,4 @@ public class MainActivity extends AppCompatActivity {
             groupedList.add(listIDJsonArray);
         }
     }
-
-
 }

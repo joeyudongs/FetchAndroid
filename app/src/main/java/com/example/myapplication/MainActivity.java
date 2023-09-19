@@ -8,10 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.android.volley.*;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     Collections.sort(listIds);
-                    //JSONArray sortedJsonArray = sortJsonArray(jsonArray, "name");
-                    //groupDataByListId(sortedJsonArray);
+                    JSONArray sortedJsonArray = sortJsonArray(jsonArray, "name");
+                    groupDataByListId(sortedJsonArray);
 
                     //IDRecyclerViewAdapter idRecyclerViewAdapter = new IDRecyclerViewAdapter(MainActivity.this, listIds, MainActivity.this);
 
@@ -105,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     private void createListIds(JSONArray jsonArray) throws JSONException {
         Set<String> uniqueListIds = new HashSet<>();
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -114,4 +111,72 @@ public class MainActivity extends AppCompatActivity {
         }
         listIds.addAll(uniqueListIds);
     }
+
+    private static final Pattern PATTERN = Pattern.compile("(?<nonDigit>\\D*)(?<digit>\\d*)");
+    public JSONArray sortJsonArray(JSONArray jsonArray, String type) throws JSONException {
+        List<JSONObject> list = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            list.add(jsonArray.getJSONObject(i));
+        }
+
+        Collections.sort(list, new Comparator<JSONObject>() {
+            @Override
+            public int compare(JSONObject a, JSONObject b) {
+                String valA = a.optString(type, "");
+                String valB = b.optString(type, "");
+
+                Matcher m1 = PATTERN.matcher(valA);
+                Matcher m2 = PATTERN.matcher(valB);
+
+                while (m1.find() && m2.find()) {
+                    int nonDigitCompare = m1.group(1).compareTo(m2.group(1));
+                    if (nonDigitCompare != 0) {
+                        return nonDigitCompare;
+                    }
+
+                    String numA = m1.group(2);
+                    String numB = m2.group(2);
+
+                    if (numA.isEmpty()) {
+                        return numB.isEmpty() ? 0 : -1;
+                    } else if (numB.isEmpty()) {
+                        return 1;
+                    }
+
+                    BigInteger n1 = new BigInteger(numA);
+                    BigInteger n2 = new BigInteger(numB);
+                    int numberCompare = n1.compareTo(n2);
+
+                    if (numberCompare != 0) {
+                        return numberCompare;
+                    }
+                }
+
+                return m1.hitEnd() && m2.hitEnd() ? 0 : (m1.hitEnd() ? -1 : 1);
+            }
+        });
+
+        JSONArray sortedJsonArray = new JSONArray(list);
+        return sortedJsonArray;
+    }
+
+    private void groupDataByListId(JSONArray sortedJsonArray) throws JSONException {
+        for (String listId : listIds) {
+            JSONArray listIDJsonArray = new JSONArray();
+
+            for (int i = 0; i < sortedJsonArray.length(); i++) {
+                JSONObject jsonObject = sortedJsonArray.getJSONObject(i);
+                String idInList = jsonObject.getString("listId");
+                String nameInList = jsonObject.optString("name", "");
+
+                if (listId.equals(idInList) && !nameInList.trim().isEmpty()) {
+                    listIDJsonArray.put(jsonObject);
+                }
+            }
+
+            groupedList.add(listIDJsonArray);
+        }
+    }
+
 }

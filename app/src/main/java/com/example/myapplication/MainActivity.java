@@ -31,7 +31,6 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String url = "https://fetch-hiring.s3.amazonaws.com/hiring.json";
     private RecyclerView recyclerView;
     public  ArrayList<String> listIds = new ArrayList<>();
     public  ArrayList<JSONArray> groupedList = new ArrayList<>();
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+        String url = "https://fetch-hiring.s3.amazonaws.com/hiring.json";
         new GetDataTask().execute(url);
     }
     private class GetDataTask extends AsyncTask<String, Void, String> {

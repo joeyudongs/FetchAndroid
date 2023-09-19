@@ -25,7 +25,7 @@ public class DisplayHiringAdapter extends RecyclerView.Adapter<DisplayHiringAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.row_list_ids, parent,false);
+        View view = layoutInflater.inflate(R.layout.list_detail_hiring, parent,false);
         return new ViewHolder(view);
     }
 

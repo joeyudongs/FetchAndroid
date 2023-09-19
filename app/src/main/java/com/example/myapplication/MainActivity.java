@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(response);
                     List<JSONObject> jsonValues = new ArrayList<>();
 
-                    //createListIds(jsonArray);
+                    createListIds(jsonArray);
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonValues.add(jsonArray.getJSONObject(i));
@@ -102,5 +104,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Data Fetch Failed", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    private void createListIds(JSONArray jsonArray) throws JSONException {
+        Set<String> uniqueListIds = new HashSet<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String listId = jsonObject.getString("listId");
+            uniqueListIds.add(listId);
+        }
+        listIds.addAll(uniqueListIds);
     }
 }

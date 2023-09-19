@@ -35,9 +35,9 @@ public class DisplayHiringActivity extends AppCompatActivity {
                 arrayList.add(idEntity);
             }
 
-            //ViewIDAdapter viewIDAdapter = new ViewIDAdapter(this, arrayList);
-            //recyclerView.setLayoutManager(new LinearLayoutManager(ViewIDActivity.this, LinearLayoutManager.VERTICAL,false));
-            //recyclerView.setAdapter(viewIDAdapter);
+            DisplayHiringAdapter displayHiringAdapter = new DisplayHiringAdapter(this, arrayList);
+            recyclerView.setLayoutManager(new LinearLayoutManager(DisplayHiringActivity.this, LinearLayoutManager.VERTICAL,false));
+            recyclerView.setAdapter(displayHiringAdapter);
 
         } catch (JSONException e) {
             e.printStackTrace();

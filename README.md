@@ -1,5 +1,5 @@
 # Fetch Android
-Please write a native Android app in Kotlin or Java that retrieves the data from https://fetch-hiring.s3.amazonaws.com/hiring.json.
+A native Android app that retrieves the data from https://fetch-hiring.s3.amazonaws.com/hiring.json.
 
 ## Requirements
 * Display all the items grouped by "listId"

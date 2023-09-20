@@ -27,7 +27,7 @@ public class ListIDAdapter extends RecyclerView.Adapter<ListIDAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.id_row, parent,false);
+        View view = layoutInflater.inflate(R.layout.listid_group, parent,false);
         return new ViewHolder(view);
     }
 
@@ -54,7 +54,7 @@ public class ListIDAdapter extends RecyclerView.Adapter<ListIDAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.list_id_name);
-            button = itemView.findViewById(R.id.viewIDs);
+            button = itemView.findViewById(R.id.displayListID);
         }
     }
     public interface OnIDRecyclerViewClickListener {

@@ -25,7 +25,7 @@ public class DisplayListIDDetailAdapter extends RecyclerView.Adapter<DisplayList
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.row_list_ids, parent,false);
+        View view = layoutInflater.inflate(R.layout.listid_details, parent,false);
         return new ViewHolder(view);
     }
 

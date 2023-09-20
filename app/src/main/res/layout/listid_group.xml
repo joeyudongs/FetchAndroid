@@ -15,11 +15,10 @@
         android:textSize="30dp" />
 
     <Button
+        android:id="@+id/displayListID"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/viewIDs"
-        android:textSize="20dp"
-        android:text="View ID"
-       />
+        android:text="Display ListID"
+        android:textSize="20dp" />
 
 </LinearLayout>

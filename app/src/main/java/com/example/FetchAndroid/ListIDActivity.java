@@ -1,26 +1,21 @@
-package com.example.myapplication;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.FetchAndroid;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -28,32 +23,25 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity {
-
+public class ListIDActivity extends AppCompatActivity implements ListIDAdapter.OnIDRecyclerViewClickListener {
     private RecyclerView recyclerView;
     public  ArrayList<String> listIds = new ArrayList<>();
     public  ArrayList<JSONArray> groupedList = new ArrayList<>();
 
-    ListIDAdapter.OnIDRecyclerViewClickListener listener = new ListIDAdapter.OnIDRecyclerViewClickListener() {
-        @Override
-        public void OnClick(int pos) {
-            JSONArray jsonArray = groupedList.get(pos);
-
-            Intent intent = new Intent(MainActivity.this, DisplayHiringActivity.class);
-            intent.putExtra("data",jsonArray.toString());
-            startActivity(intent);
-        }
-    };
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_listid);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        String url = "https://fetch-hiring.s3.amazonaws.com/hiring.json";
+
+        String url ="https://fetch-hiring.s3.amazonaws.com/hiring.json";
         new GetDataTask().execute(url);
     }
     private class GetDataTask extends AsyncTask<String, Void, String> {
@@ -101,20 +89,19 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray sortedJsonArray = sortJsonArray(jsonArray, "name");
                     groupDataByListId(sortedJsonArray);
 
-                    ListIDAdapter listIDAdapter = new ListIDAdapter(MainActivity.this, listIds, listener);
+                    ListIDAdapter listIdAdapter = new ListIDAdapter(ListIDActivity.this, listIds, ListIDActivity.this);
 
-                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
-                    recyclerView.setAdapter(listIDAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(ListIDActivity.this, LinearLayoutManager.VERTICAL, false));
+                    recyclerView.setAdapter(listIdAdapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(MainActivity.this, "Data Fetch Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListIDActivity.this, "Data Fetch Failed", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
     private void createListIds(JSONArray jsonArray) throws JSONException {
         Set<String> uniqueListIds = new HashSet<>();
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -124,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         }
         listIds.addAll(uniqueListIds);
     }
-
     private static final Pattern PATTERN = Pattern.compile("(?<nonDigit>\\D*)(?<digit>\\d*)");
     public JSONArray sortJsonArray(JSONArray jsonArray, String type) throws JSONException {
         List<JSONObject> list = new ArrayList<>();
@@ -171,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         JSONArray sortedJsonArray = new JSONArray(list);
+
         return sortedJsonArray;
     }
-
     private void groupDataByListId(JSONArray sortedJsonArray) throws JSONException {
         for (String listId : listIds) {
             JSONArray listIDJsonArray = new JSONArray();
@@ -190,5 +176,14 @@ public class MainActivity extends AppCompatActivity {
 
             groupedList.add(listIDJsonArray);
         }
+    }
+
+    @Override
+    public void OnClick(int pos) {
+        JSONArray jsonArray = groupedList.get(pos);
+
+        Intent intent = new Intent(this, DisplayListIDDetailActivity.class);
+        intent.putExtra("data",jsonArray.toString());
+        startActivity(intent);
     }
 }

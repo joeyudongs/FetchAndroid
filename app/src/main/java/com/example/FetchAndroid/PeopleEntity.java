@@ -1,17 +1,17 @@
-package com.example.myapplication;
+package com.example.FetchAndroid;
 
-public class HiringEntity {
+public class PeopleEntity {
     String listId;
     String id;
     String name;
 
-    public HiringEntity(String listId, String id, String name) {
+    public PeopleEntity(String listId, String id, String name) {
         this.listId = listId;
         this.id = id;
         this.name = name;
     }
 
-    public HiringEntity() {
+    public PeopleEntity() {
     }
     public String getlistId() {
         return listId;

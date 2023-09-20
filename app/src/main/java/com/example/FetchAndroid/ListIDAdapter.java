@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.FetchAndroid;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -29,15 +27,15 @@ public class ListIDAdapter extends RecyclerView.Adapter<ListIDAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.list_id, parent,false);
+        View view = layoutInflater.inflate(R.layout.id_row, parent,false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(listIds.get(position));
-        final int currentPosition = holder.getAdapterPosition();
-        holder.button.setOnClickListener(new View.OnClickListener() {
+         holder.textView.setText(listIds.get(position));
+         final int currentPosition = holder.getAdapterPosition();
+         holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onIDRecyclerViewClickListener.OnClick(currentPosition);
@@ -55,8 +53,8 @@ public class ListIDAdapter extends RecyclerView.Adapter<ListIDAdapter.ViewHolder
         Button button;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.listId_name);
-            button = itemView.findViewById(R.id.display_group);
+            textView = itemView.findViewById(R.id.list_id_name);
+            button = itemView.findViewById(R.id.viewIDs);
         }
     }
     public interface OnIDRecyclerViewClickListener {

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.FetchAndroid;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class DisplayHiringAdapter extends RecyclerView.Adapter<DisplayHiringAdapter.ViewHolder> {
+public class DisplayListIDDetailAdapter extends RecyclerView.Adapter<DisplayListIDDetailAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<HiringEntity> idEntities;
+    ArrayList<PeopleEntity> idEntities;
 
-    public DisplayHiringAdapter(Context context,ArrayList<HiringEntity> idEntities) {
+    public DisplayListIDDetailAdapter(Context context, ArrayList<PeopleEntity> idEntities) {
         this.context = context;
         this.idEntities = idEntities;
     }
@@ -25,7 +25,7 @@ public class DisplayHiringAdapter extends RecyclerView.Adapter<DisplayHiringAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.list_detail_hiring, parent,false);
+        View view = layoutInflater.inflate(R.layout.row_list_ids, parent,false);
         return new ViewHolder(view);
     }
 
@@ -52,4 +52,3 @@ public class DisplayHiringAdapter extends RecyclerView.Adapter<DisplayHiringAdap
         }
     }
 }
-
